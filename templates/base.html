@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS AI | Smart Logistics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">N</span>
+                <span>NEXUS AI</span>
+            </div>
+
+            <p class="menu-title">MAIN MENU</p>
+
+            <nav>
+                <a href="/" class="nav-link active">▦ Dashboard</a>
+                <a href="/" class="nav-link">◈ Shipments</a>
+                <a href="/" class="nav-link">⌁ AI Predictions</a>
+                <a href="/" class="nav-link">◎ Analytics</a>
+            </nav>
+
+            <div class="sidebar-bottom">
+                <p>INTELLIGENT LOGISTICS</p>
+                <span>Powered by AI</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <div>
+                    <p class="welcome-label">WELCOME BACK</p>
+                    <h2>Logistics Overview</h2>
+                </div>
+
+                <div class="user-profile">
+                    <span class="status-dot"></span>
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+
+        </main>
+
+    </div>
+
+</body>
+</html>

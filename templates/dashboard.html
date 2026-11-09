@@ -1,0 +1,161 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="welcome-section">
+    <div>
+        <p class="section-label">CONTROL CENTER</p>
+        <h1>Global Trade Dashboard</h1>
+        <p class="subtitle">
+            Monitor your shipments and manage global logistics in real time.
+        </p>
+    </div>
+
+    <div class="live-indicator">
+        <span class="status-dot"></span>
+        SYSTEM ONLINE
+    </div>
+</section>
+
+<!-- Statistics -->
+<section class="stats-grid">
+
+    <div class="stat-card">
+        <p>Total Shipments</p>
+        <h2>{{ total }}</h2>
+        <span>All registered shipments</span>
+    </div>
+
+    <div class="stat-card">
+        <p>In Transit</p>
+        <h2>{{ in_transit }}</h2>
+        <span>Currently moving</span>
+    </div>
+
+    <div class="stat-card warning-card">
+        <p>Delayed Shipments</p>
+        <h2>{{ delayed }}</h2>
+        <span>Require attention</span>
+    </div>
+
+    <div class="stat-card success-card">
+        <p>Delivered</p>
+        <h2>{{ delivered }}</h2>
+        <span>Successfully completed</span>
+    </div>
+
+</section>
+
+<!-- Shipments -->
+<section class="panel">
+
+    <div class="panel-header">
+        <div>
+            <h2>Recent Shipments</h2>
+            <p>Track and monitor your latest deliveries.</p>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>TRACKING ID</th>
+                    <th>ORIGIN</th>
+                    <th>DESTINATION</th>
+                    <th>CARRIER</th>
+                    <th>STATUS</th>
+                    <th>EST. DAYS</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for shipment in shipments %}
+                <tr>
+                    <td>{{ shipment.tracking_number }}</td>
+                    <td>{{ shipment.origin }}</td>
+                    <td>{{ shipment.destination }}</td>
+                    <td>{{ shipment.carrier }}</td>
+
+                    <td>
+                        <span class="status-badge
+                        {{ shipment.status|lower|replace(' ', '-') }}">
+                            {{ shipment.status }}
+                        </span>
+                    </td>
+
+                    <td>{{ shipment.estimated_days }}</td>
+                </tr>
+
+                {% else %}
+                <tr>
+                    <td colspan="6">No shipments available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<!-- Add Shipment -->
+<section class="panel">
+
+    <div class="panel-header">
+        <div>
+            <h2>Add New Shipment</h2>
+            <p>Register a new shipment in the system.</p>
+        </div>
+    </div>
+
+    <form action="/add-shipment" method="POST" class="shipment-form">
+
+        <div class="form-group">
+            <label>Tracking Number</label>
+            <input type="text" name="tracking_number"
+                   placeholder="Example: NX1004" required>
+        </div>
+
+        <div class="form-group">
+            <label>Origin</label>
+            <input type="text" name="origin"
+                   placeholder="Example: China" required>
+        </div>
+
+        <div class="form-group">
+            <label>Destination</label>
+            <input type="text" name="destination"
+                   placeholder="Example: Morocco" required>
+        </div>
+
+        <div class="form-group">
+            <label>Carrier</label>
+            <input type="text" name="carrier"
+                   placeholder="Example: DHL" required>
+        </div>
+
+        <div class="form-group">
+            <label>Status</label>
+            <select name="status" required>
+                <option value="In Transit">In Transit</option>
+                <option value="Delayed">Delayed</option>
+                <option value="Delivered">Delivered</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Estimated Days</label>
+            <input type="number" name="estimated_days"
+                   min="0" placeholder="Example: 5" required>
+        </div>
+
+        <button type="submit" class="add-button">
+            + Add Shipment
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}
